@@ -15,6 +15,7 @@ public class Game extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game);
-        gameView = (GameView) findViewById(R.id.GameView);
+        gameView = findViewById(R.id.GameView);
+
     }
 }

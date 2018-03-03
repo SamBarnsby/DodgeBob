@@ -3,11 +3,15 @@ package com.example.samba.flappybird;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.text.Layout;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Random;
@@ -22,14 +26,20 @@ public class GameView extends View {
     private GameThread thread = new GameThread();
     private static double PLAYER_MOVEMENT_SPEED = 0.0;
     private static double ENEMY_MOVEMENT_SPEED = 10.0;
-    private int NEXT_ENEMY_SECONDS = 2000;
+    private int NEXT_ENEMY_SECONDS = 4000;
+    private long lastenemyspawn;
+    private int points;
     boolean pressed = true;
     private View fullView;
+    private LinearLayout pointslayout;
+    private TextView pointsView;
 
     private static int BETWEEN_TIME = 50;
-    //Quan es va relaitzar el darrer proces
+    private static int BETWEEN_TIME_POINTS = 30;
+
     private long lastPlayerProcess = 0;
     private long lastEnemyProcess = 0;
+    private long lastPointProcess = 0;
 
     private Vector<Player> enemies;
     private Player player;
@@ -38,9 +48,14 @@ public class GameView extends View {
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
         contexte = context;
+        fullView = findViewById(R.id.GameView);
+        pointslayout = new LinearLayout(context);
+        pointsView = new TextView(context);
+        pointsView.setText("POINTS: 0");
+        pointsView.setTextSize(32);
+        pointsView.setTextColor(Color.WHITE);
+        pointslayout.addView(pointsView);
 
-        //fullView = findViewById(R.id.GameView);
-        //fullView.setOnTouchListener(touchListener);
         Drawable drawablePlayer = context.getResources().getDrawable(R.drawable.player);
         player = new Player(this, drawablePlayer);
         enemies = new Vector<>();
@@ -64,6 +79,7 @@ public class GameView extends View {
         enemy.setCenX(x);
         enemy.setCenY(-100);
         enemies.add(enemy);
+        lastenemyspawn = System.currentTimeMillis();
     }
 
     protected synchronized void updatePlayer(double speed) {
@@ -83,7 +99,22 @@ public class GameView extends View {
         lastEnemyProcess = now;
         for(int i = 0; i < enemies.size(); i++) {
             enemies.get(i).updateEnemyPosition(speed);
-            System.out.println(speed);
+        }
+    }
+
+    protected synchronized void checkEnemyPosition() {
+        long now = System.currentTimeMillis();
+        if(lastPointProcess+BETWEEN_TIME_POINTS > now) {
+            return;
+        }
+        lastPointProcess = now;
+        int height = getResources().getDisplayMetrics().heightPixels;
+        for(int i = 0; i < enemies.size(); i++) {
+            if(enemies.get(i).getCenY() == height + 150) {
+                points += 100;
+                pointsView.setText("POINTS: " + points);
+                System.out.println(points);
+            }
         }
     }
 
@@ -94,6 +125,11 @@ public class GameView extends View {
         for(Player enemy: enemies) {
             enemy.drawPlayer(canvas);
         }
+        pointslayout.removeView(pointsView);
+        pointslayout.addView(pointsView);
+        pointslayout.measure(canvas.getWidth(), canvas.getHeight());
+        pointslayout.layout(0,0,canvas.getWidth(), canvas.getHeight());
+        pointslayout.draw(canvas);
     }
 
     @Override
@@ -138,6 +174,10 @@ public class GameView extends View {
                 if(pressed) {
                     updatePlayer(PLAYER_MOVEMENT_SPEED);
                 }
+                if((System.currentTimeMillis() - lastenemyspawn) > NEXT_ENEMY_SECONDS) {
+                    addEnemy();
+                }
+                checkEnemyPosition();
                 updateEnemy(ENEMY_MOVEMENT_SPEED);
                 synchronized (this) {
                     while(pausa) {
