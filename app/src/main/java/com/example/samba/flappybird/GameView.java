@@ -29,13 +29,14 @@ public class GameView extends View {
     private int NEXT_ENEMY_SECONDS = 4000;
     private long lastenemyspawn;
     private int points;
+    private int changePoints;
     boolean pressed = true;
     private View fullView;
     private LinearLayout pointslayout;
     private TextView pointsView;
 
     private static int BETWEEN_TIME = 50;
-    private static int BETWEEN_TIME_POINTS = 30;
+    private static int BETWEEN_TIME_POINTS = 60;
 
     private long lastPlayerProcess = 0;
     private long lastEnemyProcess = 0;
@@ -73,8 +74,15 @@ public class GameView extends View {
     protected synchronized void addEnemy() {
         Random rand = new Random();
 
-        int  x = rand.nextInt(getResources().getDisplayMetrics().widthPixels) + 0;
-        Drawable drawableEnemy = contexte.getResources().getDrawable(R.drawable.birdenemy);
+        int  x = rand.nextInt(getResources().getDisplayMetrics().widthPixels-50) + 50;
+        int  y = rand.nextInt(1 - 0 + 1) + 0;
+        Drawable drawableEnemy;
+        if(y == 0) {
+            drawableEnemy = contexte.getResources().getDrawable(R.drawable.birdenemy);
+        }
+        else {
+            drawableEnemy = contexte.getResources().getDrawable(R.drawable.ballenemy);
+        }
         enemy = new Player(this, drawableEnemy);
         enemy.setCenX(x);
         enemy.setCenY(-100);
@@ -112,8 +120,19 @@ public class GameView extends View {
         for(int i = 0; i < enemies.size(); i++) {
             if(enemies.get(i).getCenY() == height + 150) {
                 points += 100;
+                if(NEXT_ENEMY_SECONDS == 1000) {
+
+                }
+                else if(points == (changePoints + 800)) {
+                    changePoints = points;
+                    NEXT_ENEMY_SECONDS -= 1000;
+                    System.out.println(NEXT_ENEMY_SECONDS);
+                }
                 pointsView.setText("POINTS: " + points);
-                System.out.println(points);
+            }
+
+            if(enemies.get(i).getCenX() == player.getCenX()) {
+                System.out.println(true);
             }
         }
     }
