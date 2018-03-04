@@ -13,23 +13,24 @@ public class Player {
     private int cenX, cenY;
     private int amplada, altura;
     private int xAnterior, yAnterior;
+    private int colisionRadius;
     private View view;
+    private boolean isDead;
 
     public Player(View view, Drawable drawable) {
         this.view = view;
         this.drawable = drawable;
         amplada = drawable.getIntrinsicWidth();
         altura= drawable.getIntrinsicHeight();
+        colisionRadius=(altura+amplada)/4;
+        isDead = false;
     }
 
 
     public void updatePlayerPosition(double factor) {
-        cenX += factor;
-        //Si sortim de la pantalla corregim la posicio
-        /*if(cenX<0) {cenX = view.getWidth();}
-        if(cenX>view.getWidth()) {cenX=0;}
-        if(cenY<0) {cenY = view.getHeight();}
-        if(cenY>view.getHeight()) {cenY=0;}*/
+        if(!((cenX+factor<30) || (cenX+factor > view.getWidth()-30))) {
+            cenX += factor;
+        }
     }
 
     public void updateEnemyPosition(double factor) {
@@ -44,6 +45,30 @@ public class Player {
         drawable.draw(canvas);
         canvas.restore();
         view.invalidate();
+    }
+
+    public double distance(Player g) {
+        return Math.hypot(cenX-g.cenX, cenY-g.cenY);
+    }
+
+    public boolean verifyColision(Player g) {
+        return (distance(g) < (colisionRadius+g.colisionRadius)-25);
+    }
+
+    public int getColisionRadius() {
+        return colisionRadius;
+    }
+
+    public void setColisionRadius(int colisionRadius) {
+        this.colisionRadius = colisionRadius;
+    }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
     }
 
     public Drawable getDrawable() {

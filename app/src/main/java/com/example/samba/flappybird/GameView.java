@@ -110,29 +110,25 @@ public class GameView extends View {
         }
     }
 
-    protected synchronized void checkEnemyPosition() {
-        long now = System.currentTimeMillis();
-        if(lastPointProcess+BETWEEN_TIME_POINTS > now) {
-            return;
-        }
-        lastPointProcess = now;
+    protected synchronized void checkEnemyPosition(Player enemy) {
         int height = getResources().getDisplayMetrics().heightPixels;
-        for(int i = 0; i < enemies.size(); i++) {
-            if(enemies.get(i).getCenY() == height + 150) {
+        if(!enemy.isDead()) {
+            if (enemy.getCenY() == height + 150) {
+                enemy.setDead(true);
                 points += 100;
-                if(NEXT_ENEMY_SECONDS == 1000) {
+                if (NEXT_ENEMY_SECONDS == 1000) {
+                    NEXT_ENEMY_SECONDS = 1500;
+                    ENEMY_MOVEMENT_SPEED = 15.00;
 
-                }
-                else if(points == (changePoints + 800)) {
+
+                } else if (points == (changePoints + 800)) {
                     changePoints = points;
                     NEXT_ENEMY_SECONDS -= 1000;
-                    System.out.println(NEXT_ENEMY_SECONDS);
                 }
                 pointsView.setText("POINTS: " + points);
             }
-
-            if(enemies.get(i).getCenX() == player.getCenX()) {
-                System.out.println(true);
+            if(enemy.verifyColision(player)) {
+                thread.aturar();
             }
         }
     }
@@ -196,7 +192,9 @@ public class GameView extends View {
                 if((System.currentTimeMillis() - lastenemyspawn) > NEXT_ENEMY_SECONDS) {
                     addEnemy();
                 }
-                checkEnemyPosition();
+                for(int i = 0; i < enemies.size(); i++) {
+                    checkEnemyPosition(enemies.get(i));
+                }
                 updateEnemy(ENEMY_MOVEMENT_SPEED);
                 synchronized (this) {
                     while(pausa) {
