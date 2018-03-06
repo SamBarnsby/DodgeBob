@@ -2,6 +2,7 @@ package com.example.samba.flappybird;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +12,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private ImageButton bScore;
     private ImageButton bPlay;
     public static HighScoreArray storage = new HighScoreArray();
+    MediaPlayer reproductor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,6 +21,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         bPlay = findViewById(R.id.start);
         bScore.setOnClickListener(this);
         bPlay.setOnClickListener(this);
+        reproductor = MediaPlayer.create(this, R.raw.intro);
+        reproductor.setLooping(true);
+        reproductor.start();
+
+        //startService(new Intent(MainActivity.this, MusicService.class));
     }
 
     @Override

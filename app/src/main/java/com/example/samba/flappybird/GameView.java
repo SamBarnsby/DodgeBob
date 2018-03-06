@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ public class GameView extends View {
     private View fullView;
     private LinearLayout pointslayout;
     private TextView pointsView;
+    private ImageView lifeView;
 
     private static int BETWEEN_TIME = 50;
     private static int BETWEEN_TIME_POINTS = 60;
@@ -57,6 +59,8 @@ public class GameView extends View {
         pointsView.setTextColor(Color.WHITE);
         pointslayout.addView(pointsView);
 
+        lifeView = new ImageView(context);
+        lifeView.setImageResource(R.drawable.health1);
         Drawable drawablePlayer = context.getResources().getDrawable(R.drawable.player);
         player = new Player(this, drawablePlayer);
         enemies = new Vector<>();
@@ -65,7 +69,6 @@ public class GameView extends View {
 
     protected void onSizeChanged(int ample, int alt, int ample_ant, int alt_ant) {
         super.onSizeChanged(ample, alt, ample_ant, alt_ant);
-
         player.setCenX (ample / 2);
         player.setCenY (alt - (alt / 10));
         thread.start();
@@ -136,12 +139,14 @@ public class GameView extends View {
 
     protected synchronized void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        lifeView.draw(canvas);
         player.drawPlayer(canvas);
         for(Player enemy: enemies) {
             enemy.drawPlayer(canvas);
         }
         pointslayout.removeView(pointsView);
         pointslayout.addView(pointsView);
+
         pointslayout.measure(canvas.getWidth(), canvas.getHeight());
         pointslayout.layout(0,0,canvas.getWidth(), canvas.getHeight());
         pointslayout.draw(canvas);
