@@ -5,11 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
     android:orientation="vertical"
     android:gravity="center"
     tools:context="com.example.samba.flappybird.MainActivity"
     android:weightSum="1">
+
+    <com.q42.android.scrollingimageview.ScrollingImageView
+        android:id="@+id/scrollingImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:speed="1dp"
+        app:src="@drawable/backgroundgame"/>
 
     <ImageView
         android:id="@+id/imageView"
