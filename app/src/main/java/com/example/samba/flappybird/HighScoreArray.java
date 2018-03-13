@@ -11,11 +11,6 @@ public class HighScoreArray {
 
     public HighScoreArray() {
         scores = new Vector<String>();
-        for (int i = 0; i < 25; i++) {
-            scores.add("123000 Pepito Dominguez");
-            scores.add("111000 Pedro Martinez");
-            scores.add("011000 Paco Pérez");
-        }
     }
 
     public void saveScore(int points, String name) {

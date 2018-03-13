@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/audio_preferences"
+        android:key="audio_preferences">
+        <CheckBoxPreference
+            android:key="music"
+            android:title="@string/music_option"
+            android:summary="@string/music_sumarry"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/game_preferences"
+        android:key="game_settings">
+        <ListPreference
+            android:key="background"
+            android:title="@string/background_setting"
+            android:summary="@string/background_sumarry"
+            android:entries="@array/backgroundTypes"
+            android:entryValues="@array/backgroundTypesValues"
+            android:defaultValue="1" />
+
+        <ListPreference
+            android:key="player"
+            android:title="@string/player_setting"
+            android:summary="@string/player_sumarry"
+            android:entries="@array/PlayerTypes"
+            android:entryValues="@array/PlayerTypesValues"
+            android:defaultValue="1" />
+    </PreferenceCategory>
+</PreferenceScreen>

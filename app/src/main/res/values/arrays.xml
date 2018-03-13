@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="backgroundTypes">
+        <item>@string/backgroundType1</item>
+        <item>@string/backgroundType2</item>
+        <item>@string/backgroundType3</item>
+        <item>@string/backgroundType4</item>
+    </string-array>
+
+    <string-array name="backgroundTypesValues">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
+    <string-array name="PlayerTypes">
+        <item>@string/PlayerType1</item>
+        <item>@string/PlayerType2</item>
+        <item>@string/PlayerType3</item>
+        <!-- <item>@string/PlayerType4</item> -->
+    </string-array>
+
+    <string-array name="PlayerTypesValues">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <!-- <item>4</item> -->
+    </string-array>
+</resources>

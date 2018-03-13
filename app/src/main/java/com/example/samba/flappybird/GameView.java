@@ -1,11 +1,15 @@
 package com.example.samba.flappybird;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Layout;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -26,9 +30,12 @@ import java.util.Vector;
 public class GameView extends View {
     Context contexte;
     private GameThread thread = new GameThread();
+    SharedPreferences pref;
     private static double PLAYER_MOVEMENT_SPEED = 0.0;
     private static double ENEMY_MOVEMENT_SPEED = 10.0;
     private int NEXT_ENEMY_SECONDS = 4000;
+    private int sprite = 1;
+    private boolean right = true;
     private long lastenemyspawn;
     private int points;
     private int changePoints;
@@ -37,7 +44,8 @@ public class GameView extends View {
     private LinearLayout pointslayout;
     private TextView pointsView;
     private ImageView lifeView;
-
+    private GameView gameView;
+    private Activity father;
     private static int BETWEEN_TIME = 50;
     private static int BETWEEN_TIME_POINTS = 60;
 
@@ -47,11 +55,13 @@ public class GameView extends View {
 
     private Vector<Player> enemies;
     private Player player;
+    private Drawable drawablePlayer;
     private Player enemy;
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
         contexte = context;
+        pref = PreferenceManager.getDefaultSharedPreferences(contexte);
         fullView = findViewById(R.id.GameView);
         pointslayout = new LinearLayout(context);
         pointsView = new TextView(context);
@@ -60,11 +70,36 @@ public class GameView extends View {
         pointsView.setTextColor(Color.WHITE);
         pointslayout.addView(pointsView);
 
+        gameView = findViewById(R.id.GameView);
         lifeView = new ImageView(context);
         lifeView.setImageResource(R.drawable.health1);
-        Drawable drawablePlayer = context.getResources().getDrawable(R.drawable.player);
-        player = new Player(this, drawablePlayer);
+        drawablePlayer = context.getResources().getDrawable(R.drawable.player_right);
+
         enemies = new Vector<>();
+
+        if(pref.getString("background", "1").equals("1")) {
+            gameView.setBackgroundResource(R.drawable.backgroundgame);
+        }
+        else if(pref.getString("background", "1").equals("2")) {
+            gameView.setBackgroundResource(R.drawable.cliff_background);
+        }
+        else if(pref.getString("background", "1").equals("3")) {
+            gameView.setBackgroundResource(R.drawable.cave_background);
+        }
+        else if(pref.getString("background", "1").equals("4")) {
+            gameView.setBackgroundResource(R.drawable.desert_background);
+        }
+
+        if(pref.getString("player", "1").equals("2")) {
+           drawablePlayer  = context.getResources().getDrawable(R.drawable.knight_right);
+           sprite = 2;
+        }
+        else if(pref.getString("player", "1").equals("3")) {
+            drawablePlayer  = context.getResources().getDrawable(R.drawable.frog_right);
+            sprite = 3;
+        }
+
+        player = new Player(this, drawablePlayer);
         addEnemy();
     }
 
@@ -132,9 +167,18 @@ public class GameView extends View {
                 pointsView.setText("POINTS: " + points);
             }
             if(enemy.verifyColision(player)) {
-                thread.aturar();
+                endGame();
             }
         }
+    }
+
+    private void endGame() {
+        Bundle bundle = new Bundle();
+        bundle.putInt("score", points);
+        Intent intent = new Intent();
+        intent.putExtras(bundle);
+        father.setResult(Activity.RESULT_OK, intent);
+        father.finish();
     }
 
 
@@ -160,9 +204,11 @@ public class GameView extends View {
                 pressed = true;
                 if(event.getX() < getResources().getDisplayMetrics().widthPixels / 2) {
                     PLAYER_MOVEMENT_SPEED = -20.0;
+                    right = false;
                 }
                 else {
                     PLAYER_MOVEMENT_SPEED = 20;
+                    right = true;
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -173,26 +219,53 @@ public class GameView extends View {
         return true;
     }
 
-    class GameThread extends Thread {
-        private boolean pausa,corrent;
+    public void setFather(Activity father) {
+        this.father = father;
+    }
 
-        public synchronized void pausar() {
-            pausa=true;
+    class GameThread extends Thread {
+        private boolean pause,running;
+
+        public synchronized void pause() {
+            pause=true;
         }
 
-        public synchronized void reanudar() {
-            pausa=false;
+        public synchronized void resumeThread() {
+            pause=false;
             notify();
         }
 
-        public synchronized void aturar() {
-            corrent = false;
-            if(pausa)reanudar();
+        public synchronized void stopThread() {
+            running = false;
+            if(pause)resumeThread();
         }
         public void run() {
-            corrent = true;
-            while(corrent) {
+            running = true;
+            while(running) {
                 if(pressed) {
+                    if(right) {
+                        if(sprite == 1) {
+                            drawablePlayer  = contexte.getResources().getDrawable(R.drawable.player_right);
+                        }
+                        else if(sprite == 2) {
+                            drawablePlayer  = contexte.getResources().getDrawable(R.drawable.knight_right);
+                        }
+                        else if(sprite == 3) {
+                            drawablePlayer  = contexte.getResources().getDrawable(R.drawable.frog_right);
+                        }
+                    }
+                    else {
+                        if(sprite == 1) {
+                            drawablePlayer  = contexte.getResources().getDrawable(R.drawable.player_left);
+                        }
+                        else if(sprite == 2) {
+                            drawablePlayer  = contexte.getResources().getDrawable(R.drawable.knight_left);
+                        }
+                        else if(sprite == 3) {
+                            drawablePlayer  = contexte.getResources().getDrawable(R.drawable.frog_left);
+                        }
+                    }
+                    player.setDrawable(drawablePlayer);
                     updatePlayer(PLAYER_MOVEMENT_SPEED);
                 }
                 if((System.currentTimeMillis() - lastenemyspawn) > NEXT_ENEMY_SECONDS) {
@@ -203,7 +276,7 @@ public class GameView extends View {
                 }
                 updateEnemy(ENEMY_MOVEMENT_SPEED);
                 synchronized (this) {
-                    while(pausa) {
+                    while(pause) {
                         try {
                             wait();
                         } catch (Exception e) {
@@ -212,5 +285,9 @@ public class GameView extends View {
                 }
             }
         }
+    }
+
+    public GameThread getThread() {
+        return thread;
     }
 }

@@ -6,4 +6,19 @@
     <string name="score">SCORES</string>
     <string name="exit">EXIT</string>
     <string name="settings">SETTINGS</string>
+    <string name="music_option">Background Music</string>
+    <string name="music_sumarry">Disable this if you dont want background music</string>
+    <string name="audio_preferences">AUDIO OPTIONS</string>
+    <string name="game_preferences">GAME SETTINGS</string>
+    <string name="background_setting">Choose your Background</string>
+    <string name="background_sumarry">Select a background that fits your current mood!</string>
+    <string name="backgroundType1">Plains</string>
+    <string name="backgroundType2">Cliffs</string>
+    <string name="backgroundType3">Cave</string>
+    <string name="backgroundType4">Desert</string>
+    <string name="PlayerType1">Old</string>
+    <string name="PlayerType2">Knight</string>
+    <string name="player_setting">Choose your hero</string>
+    <string name="player_sumarry">Change the aspect of your hero</string>
+    <string name="PlayerType3">Hero Frog</string>
 </resources>

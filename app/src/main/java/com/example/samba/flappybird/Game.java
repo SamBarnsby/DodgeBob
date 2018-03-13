@@ -16,6 +16,25 @@ public class Game extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game);
         gameView = findViewById(R.id.GameView);
+        gameView.setFather(this);
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        gameView.getThread().pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        gameView.getThread().resumeThread();
+    }
+
+    @Override
+    protected void onDestroy() {
+        gameView.getThread().stopThread();
+        super.onDestroy();
     }
 }
