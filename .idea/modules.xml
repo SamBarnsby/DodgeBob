@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/DodgeBob.iml" filepath="$PROJECT_DIR$/DodgeBob.iml" />
       <module fileurl="file://C:\Users\samba\AndroidStudioProjects\FlappyBird\DodgeBob.iml" filepath="C:\Users\samba\AndroidStudioProjects\FlappyBird\DodgeBob.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FlappyBird.iml" filepath="$PROJECT_DIR$/FlappyBird.iml" />
       <module fileurl="file://C:\Users\samue\StudioProjects\DodgeBob\FlappyBird.iml" filepath="C:\Users\samue\StudioProjects\DodgeBob\FlappyBird.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

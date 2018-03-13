@@ -22,7 +22,7 @@
         scrolling_image_view:src="@drawable/scroller" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/logo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/logo" />

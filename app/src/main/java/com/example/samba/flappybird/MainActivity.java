@@ -8,8 +8,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.q42.android.scrollingimageview.ScrollingImageView;
@@ -31,6 +34,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
         bScore.setOnClickListener(this);
         bPlay.setOnClickListener(this);
         bSettings.setOnClickListener(this);
+        startAnimations();
+    }
+
+    public void startAnimations() {
+        ImageView imageView = (ImageView) findViewById(R.id.logo);
+        Animation startAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in_animation);
+        imageView.startAnimation(startAnimation);
     }
 
     @Override
