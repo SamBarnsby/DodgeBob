@@ -74,6 +74,7 @@
             android:textAlignment="center"
             android:fontFamily="@font/kenvector_future"
             android:layout_margin="@dimen/buton_border" />
+
         <Button
             android:id="@+id/exit"
             android:layout_width="wrap_content"
@@ -88,4 +89,13 @@
             android:fontFamily="@font/kenvector_future"
             android:layout_margin="@dimen/buton_border"/>
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/player"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|left"
+        android:layout_marginBottom="40dp"
+        android:visibility="invisible"
+        android:src="@drawable/player_right" />
 </FrameLayout>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DodgeBox</string>
+    <string name="app_name">DodgeBob</string>
     <string name="altretext">fill text</string>
     <string name="scores">Leaderboards</string>
     <string name="play">PLAY</string>

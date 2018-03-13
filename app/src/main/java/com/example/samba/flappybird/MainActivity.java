@@ -3,6 +3,7 @@ package com.example.samba.flappybird;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,6 +32,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         bScore = findViewById(R.id.scores);
         bPlay = findViewById(R.id.start);
         bSettings = findViewById(R.id.settings);
+        bExit = findViewById(R.id.exit);
         bScore.setOnClickListener(this);
         bPlay.setOnClickListener(this);
         bSettings.setOnClickListener(this);
@@ -38,9 +40,20 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     public void startAnimations() {
-        ImageView imageView = (ImageView) findViewById(R.id.logo);
-        Animation startAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in_animation);
-        imageView.startAnimation(startAnimation);
+        ImageView imageView = findViewById(R.id.logo);
+        ImageView player = findViewById(R.id.player);
+        Animation logoAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in_animation);
+        Animation buttonLeftAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_from_left);
+        Animation buttonRightAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_from_right);
+        Animation playerAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.player_run);
+        imageView.startAnimation(logoAnimation);
+        bPlay.startAnimation(buttonLeftAnimation);
+        bSettings.startAnimation(buttonLeftAnimation);
+        bScore.startAnimation(buttonRightAnimation);
+        bExit.startAnimation(buttonRightAnimation);
+        player.setVisibility(View.VISIBLE);
+        player.startAnimation(playerAnimation);
+        player.setVisibility(View.INVISIBLE);
     }
 
     @Override
