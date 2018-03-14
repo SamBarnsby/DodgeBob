@@ -30,7 +30,7 @@ public class HighScoreAdapter extends FirebaseRecyclerAdapter<Score, HighScoreAd
         this.context = context;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView title, othertext;
         public ImageView icon;
 
