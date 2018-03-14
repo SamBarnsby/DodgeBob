@@ -11,7 +11,7 @@
         android:layout_width="?android:attr/listPreferredItemHeight"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:src="@drawable/score"/>
+        android:src="@drawable/player_right"/>
 
     <TextView
         android:id="@+id/title"

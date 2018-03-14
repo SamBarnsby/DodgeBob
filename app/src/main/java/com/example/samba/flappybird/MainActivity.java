@@ -8,6 +8,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -16,15 +17,21 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.ResultCodes;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.q42.android.scrollingimageview.ScrollingImageView;
 
-public class MainActivity extends Activity implements View.OnClickListener {
+import java.util.Arrays;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private Button bScore;
     private Button bPlay;
     private Button bSettings;
     private Button bExit;
-    public static HighScoreArray storage = new HighScoreArray();
-    MediaPlayer reproductor;
+
+   private FirebaseAuth auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +44,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         bPlay.setOnClickListener(this);
         bSettings.setOnClickListener(this);
         startAnimations();
+        auth = ScoreSingleton.getInstance(this).getAuth();
     }
 
     public void startAnimations() {
@@ -109,8 +117,35 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 1234 && resultCode == RESULT_OK && data != null) {
             int score = data.getExtras().getInt("score");
-            storage.saveScore(score, "Sam");
-            launchScore();
+            saveScore(score);
+        }
+        else if(requestCode == 123) {
+            if(resultCode == ResultCodes.OK) {
+
+            }
+        }
+    }
+
+    public void saveScore(int score) {
+        FirebaseUser firebaseUser = auth.getCurrentUser();
+        if(firebaseUser != null) {
+            String name = firebaseUser.getDisplayName();
+            String email = firebaseUser.getEmail();
+            String provider = firebaseUser.getProviders().get(0);
+            SharedPreferences pref = getSharedPreferences("com.example.samba.flappybird_internal", MODE_PRIVATE);
+            pref.edit().putString("provider", provider).commit();
+            pref.edit().putString("name", name).commit();
+            if(email != null) {
+                pref.edit().putString("email", email).commit();
+            }
+            ScoreSingleton.getInstance(this).getDatabaseReference().push().setValue(new Score(score, name));
+            Intent i = new Intent(this, Scores.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
+
+        } else {
+            startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                    new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build())).setIsSmartLockEnabled(true).build(), 123);
         }
     }
 

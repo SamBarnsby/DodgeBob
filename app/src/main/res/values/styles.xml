@@ -1,11 +1,11 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Scores_theme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Scores_theme" parent="Theme.AppCompat">
         <item name="android:fontFamily">kenvector_future</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textStyle">bold</item>
