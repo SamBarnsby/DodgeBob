@@ -1,6 +1,8 @@
 package com.example.samba.flappybird;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button bPlay;
     private Button bSettings;
     private Button bExit;
+    private int score;
 
    private FirebaseAuth auth;
     @Override
@@ -116,17 +119,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 1234 && resultCode == RESULT_OK && data != null) {
-            int score = data.getExtras().getInt("score");
-            saveScore(score);
+            score = data.getExtras().getInt("score");
+            saveScore(true);
         }
         else if(requestCode == 123) {
             if(resultCode == ResultCodes.OK) {
-
+                saveScore(false);
             }
         }
     }
 
-    public void saveScore(int score) {
+    public void saveScore(boolean toSave) {
         FirebaseUser firebaseUser = auth.getCurrentUser();
         if(firebaseUser != null) {
             String name = firebaseUser.getDisplayName();
@@ -138,10 +141,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if(email != null) {
                 pref.edit().putString("email", email).commit();
             }
-            ScoreSingleton.getInstance(this).getDatabaseReference().push().setValue(new Score(score, name));
-            Intent i = new Intent(this, Scores.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(i);
+            if(toSave) {
+                SharedPreferences appPref = PreferenceManager.getDefaultSharedPreferences(this);
+                ScoreSingleton.getInstance(this).getDatabaseReference().push().setValue(new Score(score, appPref.getString("username","Player")));
+                Intent i = new Intent(this, Scores.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(i);
+            }
 
         } else {
             startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),

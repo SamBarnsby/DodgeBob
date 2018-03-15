@@ -33,7 +33,7 @@ public class GameView extends View {
     SharedPreferences pref;
     private static double PLAYER_MOVEMENT_SPEED = 0.0;
     private static double ENEMY_MOVEMENT_SPEED = 10.0;
-    private int NEXT_ENEMY_SECONDS = 4000;
+    private int NEXT_ENEMY_SECONDS = 2000;
     private int sprite = 1;
     private boolean right = true;
     private long lastenemyspawn;
@@ -61,6 +61,11 @@ public class GameView extends View {
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
         contexte = context;
+        PLAYER_MOVEMENT_SPEED = 0.0;
+        ENEMY_MOVEMENT_SPEED = 10.0;
+        NEXT_ENEMY_SECONDS = 2000;
+        BETWEEN_TIME = 50;
+        BETWEEN_TIME_POINTS = 60;
         pref = PreferenceManager.getDefaultSharedPreferences(contexte);
         fullView = findViewById(R.id.GameView);
         pointslayout = new LinearLayout(context);
@@ -74,7 +79,6 @@ public class GameView extends View {
         lifeView = new ImageView(context);
         lifeView.setImageResource(R.drawable.health1);
         drawablePlayer = context.getResources().getDrawable(R.drawable.player_right);
-
         enemies = new Vector<>();
 
         if(pref.getString("background", "1").equals("1")) {
@@ -152,17 +156,17 @@ public class GameView extends View {
     protected synchronized void checkEnemyPosition(Player enemy) {
         int height = getResources().getDisplayMetrics().heightPixels;
         if(!enemy.isDead()) {
-            if (enemy.getCenY() == height + 150) {
+            if (enemy.getCenY() > height + 150) {
                 enemy.setDead(true);
                 points += 100;
                 if (NEXT_ENEMY_SECONDS == 1000) {
-                    NEXT_ENEMY_SECONDS = 1500;
                     ENEMY_MOVEMENT_SPEED = 15.00;
 
 
                 } else if (points == (changePoints + 800)) {
                     changePoints = points;
                     NEXT_ENEMY_SECONDS -= 1000;
+                    System.out.println(NEXT_ENEMY_SECONDS);
                 }
                 pointsView.setText("POINTS: " + points);
             }

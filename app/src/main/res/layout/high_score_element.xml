@@ -30,6 +30,6 @@
         android:layout_below="@+id/title"
         android:layout_toLeftOf="@+id/icon"
         android:gravity="center"
-        android:text="@string/altretext"/>
+        android:text=""/>
 
 </RelativeLayout>

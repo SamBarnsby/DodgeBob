@@ -21,4 +21,5 @@
     <string name="player_setting">Choose your hero</string>
     <string name="player_sumarry">Change the aspect of your hero</string>
     <string name="PlayerType3">Hero Frog</string>
+    <string name="username">Insert your username here</string>
 </resources>
