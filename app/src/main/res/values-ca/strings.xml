@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DodgeBob</string>
+    <string name="scores">Puntuacions</string>
+    <string name="play">JUGAR</string>
+    <string name="score">PUNTUACIONS</string>
+    <string name="exit">SORTIR</string>
+    <string name="settings">CONFIGURACIONS</string>
+    <string name="music_option">Musica de fons</string>
+    <string name="music_sumarry">Desabilita aquesta opcio si no vols musica de fons</string>
+    <string name="audio_preferences">CONFIGURACIONS DE AUDIO</string>
+    <string name="game_preferences">CONFIGURACIONS DE JOC</string>
+    <string name="background_setting">Elegeix el teu fons</string>
+    <string name="background_sumarry">Selecciona un fons que agradi</string>
+    <string name="backgroundType1">camp</string>
+    <string name="backgroundType2">Muntanya</string>
+    <string name="backgroundType3">Cova</string>
+    <string name="backgroundType4">Desert</string>
+    <string name="PlayerType1">Vell</string>
+    <string name="PlayerType2">Cavaller</string>
+    <string name="player_setting">Elegeix el teu personatge</string>
+    <string name="PlayerType3">Granota</string>
+    <string name="player_sumarry">Cambia laspecte del teu personatge</string>
+    <string name="username">Insereix un nom ed usuari</string>
+</resources>

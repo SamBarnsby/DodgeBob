@@ -58,6 +58,8 @@ public class GameView extends View {
     private Drawable drawablePlayer;
     private Player enemy;
 
+    private String songName = "";
+
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
         contexte = context;
@@ -80,6 +82,13 @@ public class GameView extends View {
         lifeView.setImageResource(R.drawable.health1);
         drawablePlayer = context.getResources().getDrawable(R.drawable.player_right);
         enemies = new Vector<>();
+        if(pref.getBoolean("music", true) == true) {
+
+            songName = "plains";
+            Intent i = new Intent(context, MusicService.class);
+            i.putExtra("song",songName);
+            context.startService(i);
+        }
 
         if(pref.getString("background", "1").equals("1")) {
             gameView.setBackgroundResource(R.drawable.backgroundgame);

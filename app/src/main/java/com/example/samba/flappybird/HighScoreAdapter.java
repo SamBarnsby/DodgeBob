@@ -49,6 +49,6 @@ public class HighScoreAdapter extends FirebaseRecyclerAdapter<Score, HighScoreAd
     @Override
     protected void populateViewHolder(ViewHolder viewHolder, Score score, int position) {
         viewHolder.title.setText(score.toString());
-        viewHolder.icon.setImageResource(R.drawable.player_right);
+        viewHolder.icon.setImageResource(R.drawable.score);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.samba.flappybird;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bScore.setOnClickListener(this);
         bPlay.setOnClickListener(this);
         bSettings.setOnClickListener(this);
+        bExit.setOnClickListener(this);
         startAnimations();
         auth = ScoreSingleton.getInstance(this).getAuth();
     }
@@ -72,12 +74,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(v.getId() == R.id.scores) launchScore();
         if(v.getId() == R.id.start) launchPlay();
         if(v.getId() == R.id.settings) launchSettings();
-        //if(v.getId() == R.id.exit) exit();
+        if(v.getId() == R.id.exit) exit();
     }
-
-    /*public void exit() {
-
-    }*/
 
     public void launchScore() {
         bScore.setBackgroundResource(R.drawable.pressed);
@@ -113,11 +111,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivityForResult(i, 1234);
             }
         }, 200 );
+        stopMainMusic();
+    }
+
+    public void exit() {
+        finish();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        stopMainMusic();
         if(requestCode == 1234 && resultCode == RESULT_OK && data != null) {
             score = data.getExtras().getInt("score");
             saveScore(true);
@@ -127,6 +131,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 saveScore(false);
             }
         }
+    }
+
+    public void stopMainMusic() {
+        stopService(new Intent(MainActivity.this, MusicService.class));
     }
 
     public void saveScore(boolean toSave) {
@@ -156,20 +164,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        if(pref.getBoolean("music", true) == true) {
+            String songName = "intro";
+            Intent i = new Intent(MainActivity.this, MusicService.class);
+            i.putExtra("song",songName);
+            startService(i);
+        }
+        else {
+            stopMainMusic();
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         bPlay.setBackgroundResource(R.drawable.boto);
         bSettings.setBackgroundResource(R.drawable.boto);
         bScore.setBackgroundResource(R.drawable.boto);
-        //bExit.setBackgroundResource(R.drawable.boto);
-
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        if(pref.getBoolean("music", true) == true) {
-            startService(new Intent(MainActivity.this, MusicService.class));
-        }
-        else {
-            stopService(new Intent(MainActivity.this, MusicService.class));
-        }
+        bExit.setBackgroundResource(R.drawable.boto);
     }
 
     @Override

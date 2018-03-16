@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="buton_border">20px</dimen>
+    <dimen name="textPadding">20dp</dimen>
+    <dimen name="textSize">30dp</dimen>
+</resources>

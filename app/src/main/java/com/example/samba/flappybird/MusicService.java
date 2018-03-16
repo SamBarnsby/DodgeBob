@@ -3,6 +3,7 @@ package com.example.samba.flappybird;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.os.IBinder;
 
 /**
@@ -11,17 +12,31 @@ import android.os.IBinder;
 
 public class MusicService extends Service {
     MediaPlayer reproductor;
+    private boolean isRunning;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        reproductor = MediaPlayer.create(this, R.raw.intro);
+        isRunning = false;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int idArranc) {
         super.onStartCommand(intent, flags, idArranc);
-        reproductor.start();
+        if(!isRunning) {
+            isRunning = true;
+            String song;
+            Bundle extras = intent.getExtras();
+            if (extras == null) {
+                song = null;
+            } else {
+                song = extras.getString("song");
+            }
+            reproductor = MediaPlayer.create(this, getResources().getIdentifier(song,
+                    "raw", getPackageName()));
+            reproductor.setLooping(true);
+            reproductor.start();
+        }
         return START_STICKY;
     }
 
