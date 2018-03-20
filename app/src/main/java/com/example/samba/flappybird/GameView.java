@@ -15,6 +15,7 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -41,6 +42,7 @@ public class GameView extends View {
     private int changePoints;
     boolean pressed = true;
     private View fullView;
+    private boolean isPaused;
     private LinearLayout pointslayout;
     private TextView pointsView;
     private ImageView lifeView;
@@ -76,7 +78,6 @@ public class GameView extends View {
         pointsView.setTextSize(32);
         pointsView.setTextColor(Color.WHITE);
         pointslayout.addView(pointsView);
-
         gameView = findViewById(R.id.GameView);
         lifeView = new ImageView(context);
         lifeView.setImageResource(R.drawable.health1);
@@ -182,6 +183,17 @@ public class GameView extends View {
             if(enemy.verifyColision(player)) {
                 endGame();
             }
+        }
+    }
+
+    public void pauseGame() {
+        if(!isPaused) {
+            thread.pause();
+            isPaused = true;
+        }
+        else {
+            thread.resumeThread();
+            isPaused = false;
         }
     }
 

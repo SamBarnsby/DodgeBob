@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "574270830597",
+    "firebase_url": "https://dodgebobscore.firebaseio.com",
+    "project_id": "dodgebobscore",
+    "storage_bucket": "dodgebobscore.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574270830597:android:9451aa369369cb21",
+        "android_client_info": {
+          "package_name": "com.example.samba.flappybird"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "574270830597-omb3hkk3s34tu0gkgv4unlqaavp2bjke.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.samba.flappybird",
+            "certificate_hash": "769ef25ecc4abdfe73dcb6a2647f3cc1538ad1fc"
+          }
+        },
+        {
+          "client_id": "574270830597-924hj8jj6plblr7fvfl2bd4nlacg29qc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAU9-k3fNGKW7Q4hysDjvNz2jPd1xQTy3E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "574270830597-924hj8jj6plblr7fvfl2bd4nlacg29qc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
